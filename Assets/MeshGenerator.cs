@@ -4,7 +4,6 @@ public class MeshGenerator : MonoBehaviour
 {
     public int nombre_Lignes = 10;
     public int nb_Colonnes = 10;
-    public float taille_Case = 1.0f;
 
     void Start()
     {
@@ -12,7 +11,6 @@ public class MeshGenerator : MonoBehaviour
         GetComponent<MeshFilter>().mesh = mesh;
 
         Vector3[] vertices = new Vector3[(nombre_Lignes + 1) * (nb_Colonnes + 1)];
-        Vector2[] uv = new Vector2[(nombre_Lignes + 1) * (nb_Colonnes + 1)];
         int[] triangles = new int[nombre_Lignes * nb_Colonnes * 6];
 
         // Génération des sommets et des UV
@@ -21,8 +19,7 @@ public class MeshGenerator : MonoBehaviour
             for (int j = 0; j <= nb_Colonnes; j++)
             {
                 int index = i * (nb_Colonnes + 1) + j;
-                vertices[index] = new Vector3(j * taille_Case, 0, i * taille_Case);
-                uv[index] = new Vector2((float)j / nb_Colonnes, (float)i / nombre_Lignes);
+                vertices[index] = new Vector3(j, 0, i);
             }
         }
 
@@ -42,7 +39,6 @@ public class MeshGenerator : MonoBehaviour
         }
 
         mesh.vertices = vertices;
-        mesh.uv = uv;
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();
