@@ -4,3 +4,5 @@ Lancez le programme,
 Admirez les modèles 3D
 <br>
 Il y a des artefacts visuel sur les modèls surment dû à une mauvaise gestion de la lumière mais je sais pas comment corriger
+
+Formule pour calculer le centre de gravité d'un pbjet C=(n1​i=1∑n​xi​,n1​i=1∑n​yi​,n1​i=1∑n​zi​)
