@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Globalization;
+using System;
 
 public class MeshLoader : MonoBehaviour
 {
@@ -155,6 +156,55 @@ public class MeshLoader : MonoBehaviour
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] /= maxCoordinate;
+        }
+    }
+
+    void SaveMeshToFile(string path)
+    {
+        if (mesh == null)
+        {
+            Debug.LogError("Aucun mesh à enregistrer.");
+            return;
+        }
+
+        try
+        {
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                // Écrire l'en-tête du fichier
+                writer.WriteLine("OFF");
+
+                // Écrire le nombre de sommets et de faces
+                writer.WriteLine($"{mesh.vertexCount} {mesh.triangles.Length / 3} 0");
+
+                // Écrire les sommets
+                foreach (Vector3 vertex in mesh.vertices)
+                {
+                    writer.WriteLine($"{vertex.x} {vertex.y} {vertex.z}");
+                }
+
+                // Écrire les triangles
+                for (int i = 0; i < mesh.triangles.Length; i += 3)
+                {
+                    writer.WriteLine($"3 {mesh.triangles[i]} {mesh.triangles[i + 1]} {mesh.triangles[i + 2]}");
+                }
+            }
+
+            Debug.Log("Mesh enregistré dans " + path);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Erreur lors de l'enregistrement du fichier : " + ex.Message);
+        }
+    }
+
+    void Update()
+    {
+        // Vérifier si la touche S est pressée
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            string absolutePath = Path.Combine(Application.dataPath, "saved_mesh.off"); // Enregistre dans le dossier Assets
+            SaveMeshToFile(absolutePath);
         }
     }
 }
