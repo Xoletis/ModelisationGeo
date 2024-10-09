@@ -9,7 +9,6 @@ public class MeshLoader : MonoBehaviour
     // Path vers le fichier .off (vous pouvez aussi passer ce path dynamiquement)
     public string filePath = "./buddha.off";
     public bool showVerticeAndFaceCoordinante = false;
-    public bool debug = false;
 
     // Le mesh Unity que nous allons créer
     private Mesh mesh;
