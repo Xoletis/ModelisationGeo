@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Sphere : MonoBehaviour
+public class SphereGenerator : MonoBehaviour
 {
     public float rayon = 1.0f;
     public int parallelesNb = 10;
