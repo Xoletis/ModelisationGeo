@@ -173,28 +173,23 @@ public class MeshLoader : MonoBehaviour
         StringWriter meshString = new StringWriter();
         meshString.WriteLine("# Unity mesh generated");
 
-        // Export vertices
         foreach (Vector3 v in mesh.vertices)
         {
             meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "v {0} {1} {2}", v.x, v.y, v.z));
         }
 
-        // Export normals
         foreach (Vector3 n in mesh.normals)
         {
             meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", n.x, n.y, n.z));
         }
 
-        // Export UVs
         foreach (Vector2 uv in mesh.uv)
         {
             meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "vt {0} {1}", uv.x, uv.y));
         }
 
-        // Export triangles
         for (int i = 0; i < mesh.triangles.Length; i += 3)
         {
-            // OBJ format starts vertex indices at 1
             meshString.WriteLine(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}",
                 mesh.triangles[i] + 1, mesh.triangles[i + 1] + 1, mesh.triangles[i + 2] + 1));
         }
@@ -202,24 +197,13 @@ public class MeshLoader : MonoBehaviour
         return meshString.ToString();
     }
 
-    // Example usage
-    [ContextMenu("Save Mesh To Obj")]
+
+    [ContextMenu("Save Mesh")]
     private void SaveMesh()
     {
-        Mesh mesh = GetComponent<MeshFilter>().mesh;  // Get the mesh from the object
-        string path = Application.dataPath + "/SavedMesh.obj"; // Save location
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        string path = Application.dataPath + "/SavedMesh.obj";
         SaveMeshToFile(mesh, path);
         Debug.Log("saved");
-    }
-
-    void Update()
-    {
-        // Vérifier si la touche S est pressée
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Mesh mesh = GetComponent<MeshFilter>().mesh;
-            string path = Application.dataPath + "/SavedMesh.obj";
-            SaveMeshToFile(mesh, path);
-        }
     }
 }
