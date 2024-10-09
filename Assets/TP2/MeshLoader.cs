@@ -159,43 +159,57 @@ public class MeshLoader : MonoBehaviour
         }
     }
 
-    void SaveMeshToFile(string path)
+    public static void SaveMeshToFile(Mesh mesh, string filePath)
     {
-        if (mesh == null)
+        using (StreamWriter sw = new StreamWriter(filePath))
         {
-            Debug.LogError("Aucun mesh à enregistrer.");
-            return;
+            sw.Write(MeshToString(mesh));
+        }
+        Debug.Log("Mesh saved to " + filePath);
+    }
+
+    private static string MeshToString(Mesh mesh)
+    {
+        StringWriter meshString = new StringWriter();
+        meshString.WriteLine("# Unity mesh generated");
+
+        // Export vertices
+        foreach (Vector3 v in mesh.vertices)
+        {
+            meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "v {0} {1} {2}", v.x, v.y, v.z));
         }
 
-        try
+        // Export normals
+        foreach (Vector3 n in mesh.normals)
         {
-            using (StreamWriter writer = new StreamWriter(path))
-            {
-                // Écrire l'en-tête du fichier
-                writer.WriteLine("OFF");
-
-                // Écrire le nombre de sommets et de faces
-                writer.WriteLine($"{mesh.vertexCount} {mesh.triangles.Length / 3} 0");
-
-                // Écrire les sommets
-                foreach (Vector3 vertex in mesh.vertices)
-                {
-                    writer.WriteLine($"{vertex.x} {vertex.y} {vertex.z}");
-                }
-
-                // Écrire les triangles
-                for (int i = 0; i < mesh.triangles.Length; i += 3)
-                {
-                    writer.WriteLine($"3 {mesh.triangles[i]} {mesh.triangles[i + 1]} {mesh.triangles[i + 2]}");
-                }
-            }
-
-            Debug.Log("Mesh enregistré dans " + path);
+            meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "vn {0} {1} {2}", n.x, n.y, n.z));
         }
-        catch (Exception ex)
+
+        // Export UVs
+        foreach (Vector2 uv in mesh.uv)
         {
-            Debug.LogError("Erreur lors de l'enregistrement du fichier : " + ex.Message);
+            meshString.WriteLine(string.Format(CultureInfo.InvariantCulture, "vt {0} {1}", uv.x, uv.y));
         }
+
+        // Export triangles
+        for (int i = 0; i < mesh.triangles.Length; i += 3)
+        {
+            // OBJ format starts vertex indices at 1
+            meshString.WriteLine(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}",
+                mesh.triangles[i] + 1, mesh.triangles[i + 1] + 1, mesh.triangles[i + 2] + 1));
+        }
+
+        return meshString.ToString();
+    }
+
+    // Example usage
+    [ContextMenu("Save Mesh To Obj")]
+    private void SaveMesh()
+    {
+        Mesh mesh = GetComponent<MeshFilter>().mesh;  // Get the mesh from the object
+        string path = Application.dataPath + "/SavedMesh.obj"; // Save location
+        SaveMeshToFile(mesh, path);
+        Debug.Log("saved");
     }
 
     void Update()
@@ -203,8 +217,9 @@ public class MeshLoader : MonoBehaviour
         // Vérifier si la touche S est pressée
         if (Input.GetKeyDown(KeyCode.S))
         {
-            string absolutePath = Path.Combine(Application.dataPath, "saved_mesh.off"); // Enregistre dans le dossier Assets
-            SaveMeshToFile(absolutePath);
+            Mesh mesh = GetComponent<MeshFilter>().mesh;
+            string path = Application.dataPath + "/SavedMesh.obj";
+            SaveMeshToFile(mesh, path);
         }
     }
 }
