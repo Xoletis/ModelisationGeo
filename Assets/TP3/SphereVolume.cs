@@ -9,14 +9,30 @@ public class SphereVolume : MonoBehaviour
         Intersection
     }
 
+    public static SphereVolume Instance;
+
+    public int visiblePotentiel = 200;
+
     public List<Sphere> spheres;
     public int resolution = 10;
+
+    public Vector3 size = new Vector3(10, 10, 10);
 
     public Operation operation = Operation.Union;
 
     public GameObject cubePrefab;
 
     private bool[,,] cubeInsideSphere;
+
+    private void Awake()
+    {
+        if(Instance != null)
+        {
+            Debug.LogError("Il y a plusieurs instances de SphereVolume");
+        }
+
+        Instance = this;
+    }
 
     void Start()
     {
