@@ -240,7 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8e4d11d89b66c41ae500c33893ef5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 100
+  force: 64
+  earase: 1
 --- !u!1 &1749884284
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34222a9c648da5441b55bb8fbdbbf898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visiblePotentiel: 200
+  visiblePotentiel: 0
   spheres:
   - center: {x: 0, y: 0, z: 0}
     radius: 1

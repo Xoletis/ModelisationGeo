@@ -119,6 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba118a74a8d69824bbca76e1c5d42e3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  potentiel: 255
+  vert: {fileID: 2100000, guid: 14d51fd56d5c57148aa81417039fca66, type: 2}
+  rouge: {fileID: 2100000, guid: c3059c975311e49478bf4c1ef76172f1, type: 2}
+  jaune: {fileID: 2100000, guid: f61e1eb57c091bc4d9db1ecb81a8ba58, type: 2}
+  orange: {fileID: 2100000, guid: 75b3426afafe30e49b60e65713cfd3e7, type: 2}
 --- !u!54 &-2138507476759091532
 Rigidbody:
   m_ObjectHideFlags: 0
