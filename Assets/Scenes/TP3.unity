@@ -439,7 +439,7 @@ GameObject:
   - component: {fileID: 2099669189}
   - component: {fileID: 2099669188}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: "G\xE9n\xE9rateur"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,6 +463,10 @@ MonoBehaviour:
     radius: 1
   - center: {x: 1, y: 1, z: 1}
     radius: 2
+  - center: {x: 1, y: 2, z: 3}
+    radius: 1
+  - center: {x: 1, y: 3, z: 2}
+    radius: 0.5
   resolution: 15
   size: {x: 10, y: 10, z: 10}
   operation: 0

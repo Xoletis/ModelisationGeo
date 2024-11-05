@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Remove : MonoBehaviour
@@ -12,7 +9,7 @@ public class Remove : MonoBehaviour
 
     private void Start()
     {
-        int n = UnityEngine.Random.Range(1, 255);
+        int n = Random.Range(1, 255);
         potentiel = n;
         ren = GetComponent<MeshRenderer>();
         UpdateVisibility();
@@ -50,15 +47,15 @@ public class Remove : MonoBehaviour
         {
             ren.material = rouge;
         }
-        else if (potentiel >= 64 && potentiel < 128)
+        else if (potentiel < 128)
         {
             ren.material = orange;
         }
-        else if (potentiel >= 128 &&  potentiel < 192)
+        else if (potentiel < 192)
         {
             ren.material = jaune;
         }
-        else if (potentiel >= 192)
+        else
         {
             ren.material = vert;
         }
