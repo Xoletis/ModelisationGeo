@@ -4,7 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class LoopSubdivision : MonoBehaviour
 {
-    public int iterations = 1; // Nombre d'itérations de subdivision
+    public Mesh mesh;
+
+    public int iterations = 1;
 
     private void Start()
     {
@@ -16,7 +18,6 @@ public class LoopSubdivision : MonoBehaviour
         MeshFilter mf = GetComponent<MeshFilter>();
         Mesh originalMesh = mf.mesh;
 
-        // Dupliquer le mesh d'origine pour ne pas le modifier directement
         Mesh subdividedMesh = Instantiate(originalMesh);
 
         for (int i = 0; i < iterations; i++)
@@ -27,16 +28,20 @@ public class LoopSubdivision : MonoBehaviour
         mf.mesh = subdividedMesh;
     }
 
+    public void ResetMesh()
+    {
+        MeshFilter mf = GetComponent<MeshFilter>();
+        mf.mesh = mesh;
+    }
+
     Mesh Subdivide(Mesh mesh)
     {
-        // Extraction des informations du mesh
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
         Dictionary<Edge, int> edgePoints = new Dictionary<Edge, int>();
         List<Vector3> newVertices = new List<Vector3>(vertices);
         List<int> newTriangles = new List<int>();
 
-        // Création de nouveaux points sur chaque arête
         for (int i = 0; i < triangles.Length; i += 3)
         {
             int v0 = triangles[i];
@@ -47,17 +52,14 @@ public class LoopSubdivision : MonoBehaviour
             int b = GetOrCreateEdgePoint(v1, v2, vertices, newVertices, edgePoints);
             int c = GetOrCreateEdgePoint(v2, v0, vertices, newVertices, edgePoints);
 
-            // Créer les nouveaux triangles en subdivisant le triangle d'origine
             newTriangles.Add(v0); newTriangles.Add(a); newTriangles.Add(c);
             newTriangles.Add(v1); newTriangles.Add(b); newTriangles.Add(a);
             newTriangles.Add(v2); newTriangles.Add(c); newTriangles.Add(b);
             newTriangles.Add(a); newTriangles.Add(b); newTriangles.Add(c);
         }
 
-        // Mise à jour des positions des sommets pour le lissage
         Vector3[] adjustedVertices = AdjustOriginalVertices(vertices, edgePoints, newVertices);
 
-        // Création du nouveau mesh
         Mesh newMesh = new Mesh
         {
             vertices = adjustedVertices,
@@ -74,7 +76,7 @@ public class LoopSubdivision : MonoBehaviour
 
         if (!edgePoints.ContainsKey(edge))
         {
-            Vector3 midpoint = (vertices[v0] + vertices[v1]) * 0.5f; // Interpolation de base
+            Vector3 midpoint = (vertices[v0] + vertices[v1]) * 0.5f;
             int newIndex = newVertices.Count;
             newVertices.Add(midpoint);
             edgePoints[edge] = newIndex;
@@ -87,13 +89,11 @@ public class LoopSubdivision : MonoBehaviour
     {
         Vector3[] adjustedVertices = newVertices.ToArray();
 
-        // Parcours des sommets originaux et ajustement selon leurs voisins
         foreach (var edge in edgePoints)
         {
             int v0 = edge.Key.v0;
             int v1 = edge.Key.v1;
 
-            // Calcul des positions des sommets existants (simplifié ici)
             adjustedVertices[v0] = (adjustedVertices[v0] + adjustedVertices[v1]) / 2.0f;
             adjustedVertices[v1] = (adjustedVertices[v0] + adjustedVertices[v1]) / 2.0f;
         }
@@ -101,7 +101,6 @@ public class LoopSubdivision : MonoBehaviour
         return adjustedVertices;
     }
 
-    // Structure pour représenter une arête
     struct Edge
     {
         public int v0, v1;

@@ -13,5 +13,10 @@ public class LoopSubdivisionEditor : Editor
         {
             sphere.SendMessage("Generate");
         }
+
+        if (GUILayout.Button("Reset"))
+        {
+            sphere.SendMessage("ResetMesh");
+        }
     }
 }
