@@ -10,6 +10,11 @@ public class BezierCurve : MonoBehaviour
     [Range(2, 100)]
     public int resolution = 20; // Résolution de la courbe
 
+    private void Start()
+    {
+        selectedPointIndex = -1;
+    }
+
     private void Update()
     {
         HandleControlPointSelection();
@@ -72,10 +77,11 @@ public class BezierCurve : MonoBehaviour
 
     private void HandleControlPointSelection()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0)) selectedPointIndex = 0;
-        if (Input.GetKeyDown(KeyCode.Alpha1)) selectedPointIndex = 1;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) selectedPointIndex = 2;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) selectedPointIndex = 3;
+        if (Input.GetKeyDown(KeyCode.Keypad0)) selectedPointIndex = 0;
+        if (Input.GetKeyDown(KeyCode.Keypad1)) selectedPointIndex = 1;
+        if (Input.GetKeyDown(KeyCode.Keypad2)) selectedPointIndex = 2;
+        if (Input.GetKeyDown(KeyCode.Keypad3)) selectedPointIndex = 3;
+
 
         int i = 0;
         foreach (var point in controlPoints)
@@ -102,10 +108,10 @@ public class BezierCurve : MonoBehaviour
 
         Vector3 translation = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.Z)) translation += Vector3.up;
-        if (Input.GetKey(KeyCode.S)) translation += Vector3.down;
-        if (Input.GetKey(KeyCode.Q)) translation += Vector3.left;
-        if (Input.GetKey(KeyCode.D)) translation += Vector3.right;
+        if (Input.GetKey(KeyCode.UpArrow)) translation += Vector3.up;
+        if (Input.GetKey(KeyCode.DownArrow)) translation += Vector3.down;
+        if (Input.GetKey(KeyCode.RightArrow)) translation += Vector3.left;
+        if (Input.GetKey(KeyCode.LeftArrow)) translation += Vector3.right;
 
         selectedPoint.position += translation * Time.deltaTime * 5f; // Vitesse de déplacement
     }
